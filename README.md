@@ -21,6 +21,14 @@ When you ask a plain language model, or a naive GIS query, "what's the nearest h
 
 Each case had to pass an automatic filter: the straight line ends on the other bank (an odd number of river crossings), and the drive-time route crosses zero times. In every case the straight line to the "nearest" hospital crosses the St. Johns River centerline (OSM), and so does its fastest road route. The drive-time winner's route stays on the same bank (0 river crossings). `data/results.json` records these crossing counts.
 
+## Live mode: drop a pin or search
+
+Click anywhere in Duval County, or type an address or place into the search box. The page then ranks all 11 hospitals by drive time in your browser. It draws the straight-line nearest hospital (red dashed) and the drive-time route to the winner (green), and lists every hospital with drive minutes, road miles, and straight-line miles. The three precomputed cases stay as presets.
+
+- **Routing:** the [OSRM](https://project-osrm.org/) public demo server (`router.project-osrm.org`) runs on OpenStreetMap data, and each pin makes one `table` request and one `route` request. Times are free-flow estimates with no live traffic, and they can differ slightly from the precomputed osmnx numbers. The demo server is a shared, best-effort service with no uptime guarantee. If it's busy or down, the page says so and the presets still work.
+- **Geocoding:** [Nominatim](https://nominatim.org/) / OpenStreetMap, following the [usage policy](https://operations.osmfoundation.org/policies/nominatim/). It sends one request per search, only when you submit (no autocomplete), at most one per second, and only within Duval County.
+- No API keys and no backend. Everything runs in the browser.
+
 ## How it works
 
 1. **Question:** "What's the nearest hospital to this location?"
@@ -31,7 +39,7 @@ Each case had to pass an automatic filter: the straight line ends on the other b
 
 ## Run it
 
-Open `index.html` in a browser. It's fully static: the results are pre-bundled in `data/results.js`, and the only network requests are for OSM tiles and Leaflet.
+Open `index.html` in a browser, or visit the [live page](https://knightchrism.github.io/nearest-hospital-demo/). It's fully static: the results are pre-bundled in `data/results.js`, and the only network requests are for OSM tiles and Leaflet.
 
 To recompute from scratch:
 
@@ -66,6 +74,7 @@ rm /tmp/fl.pbf /tmp/duval_drive.osm         # intermediates aren't needed by the
 - Road network, hospitals, and river centerline: © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright), available under the Open Database License (ODbL). The data comes from the [Geofabrik](https://download.geofabrik.de/) Florida extract dated 2026-10-31.
 - Basemap tiles: © OpenStreetMap contributors.
 - The HIFLD Hospitals layer (Homeland Infrastructure Foundation-Level Data) was the intended cross-check. The public endpoint timed out during this build, so this version uses OSM only.
+- Live-mode routing: OSRM public demo server (Project OSRM). Live-mode geocoding: Nominatim (© OpenStreetMap contributors).
 - Libraries: OSMnx, NetworkX, pyosmium, Shapely, Leaflet.
 
 ## AI assistance disclosure

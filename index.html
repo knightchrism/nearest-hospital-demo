@@ -20,13 +20,23 @@ h2{font-size:15px;margin:4px 0 10px}.cards{display:grid;grid-template-columns:1f
 .how ol{padding-left:20px;margin:6px 0}.how li{margin:5px 0}.how{margin-top:14px;border-top:1px solid #e3e8ee;padding-top:10px}
 .legend{font-size:13px;margin:8px 0}.legend i{display:inline-block;width:26px;height:0;border-top:3px solid;vertical-align:middle;margin-right:6px}
 small,.foot{color:#5b6775;font-size:12px}
+.live{background:#f3f6fa;border:1px solid #d6dee8;border-radius:10px;padding:10px 12px;margin-bottom:12px}
+.live form{display:flex;gap:6px}.live input{flex:1;padding:7px 9px;border:1px solid #b9c5d2;border-radius:6px;font-size:14px}
+.live button{background:var(--navy);color:#fff;border:0;border-radius:6px;padding:7px 12px;cursor:pointer}.live button:disabled{opacity:.5}
+#msg{font-size:13px;margin-top:6px;min-height:1em}#msg.err{color:var(--red)}
+#rank{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}#rank td,#rank th{padding:3px 4px;border-bottom:1px solid #e6ebf0;text-align:left}#rank tr.win td{font-weight:700;color:var(--green)}#rank tr.sl td:first-child{color:var(--red)}
+.leaflet-container{cursor:crosshair}
 </style></head><body>
 <header><div class="logo">GEO<span>KNIGHT</span> GIS</div><h1>“Which hospital is nearest?” Straight-line distance vs. real roads, Jacksonville, FL</h1></header>
 <main><div id="map"></div><aside>
+<div class="live"><b>Try it:</b> click anywhere in Duval County to drop a pin, or search for an address or place.
+<form id="q"><input id="qi" placeholder="e.g. 1000 Water St, Jacksonville" autocomplete="off"><button id="qb">Find</button></form>
+<div id="msg"></div></div>
 <div class="tabs" id="tabs"></div>
 <h2 id="title"></h2>
 <div class="cards"><div class="card bad" id="bad"></div><div class="card good" id="good"></div></div>
 <div class="verdict" id="verdict"></div>
+<table id="rank"></table>
 <div class="legend"><i style="border-color:var(--red);border-top-style:dashed"></i>Straight-line nearest (as the crow flies)<br>
 <i style="border-color:var(--green)"></i>Fastest driving route over real roads and bridges<br>
 <i style="border-color:#3a7bd5"></i>St. Johns River centerline (OSM)</div>
@@ -38,7 +48,7 @@ small,.foot{color:#5b6775;font-size:12px}
 <li><b>Model explains:</b> the LLM agent calls these GIS tools, then reports the answer in plain language and says why the straight-line pick is wrong (e.g. the river is between you and it).</li>
 </ol>
 <p><small>Times are free-flow estimates with no live traffic. This is a methodology demo, not medical or navigation advice. Hospitals are named OSM <code>amenity=hospital</code> features in Duval County, limited to general acute-care hospitals; UF Health Jacksonville (downtown) is mapped in OSM as a relation, so it was added manually from its OSM/Nominatim location.</small></p></div>
-<p class="foot">Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> (ODbL), road network from the Geofabrik Florida extract. Built by GeoKnight GIS with AI assistance.</p>
+<p class="foot">Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> (ODbL), road network from the Geofabrik Florida extract. Live mode: routing by the <a href="https://project-osrm.org/">OSRM</a> public demo server (OSM data, free-flow, no traffic); geocoding by <a href="https://nominatim.org/">Nominatim</a>/OpenStreetMap. Built by GeoKnight GIS with AI assistance.</p>
 </aside></main>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="data/results.js"></script>
@@ -50,7 +60,7 @@ F.filter(f=>f.properties.kind==='hospital').forEach(f=>L.circleMarker([f.geometr
 let layer=L.layerGroup().addTo(map);
 const tabs=document.getElementById('tabs');
 R.forEach((r,i)=>{const b=document.createElement('button');b.textContent=`Case ${i+1}`;b.onclick=()=>show(i);tabs.appendChild(b)});
-function show(i){const r=R[i];layer.clearLayers();[...tabs.children].forEach((b,j)=>b.classList.toggle('on',i===j));
+function show(i){const r=R[i];layer.clearLayers();document.getElementById('rank').innerHTML='';[...tabs.children].forEach((b,j)=>b.classList.toggle('on',i===j));
  const g=k=>F.find(f=>f.properties.case===i&&f.properties.kind===k);
  const ll=c=>c.map(p=>[p[1],p[0]]);
  L.polyline(ll(g('straight').geometry.coordinates),{color:'#d7263d',weight:4,dashArray:'8 8'}).addTo(layer);
@@ -65,4 +75,57 @@ function show(i){const r=R[i];layer.clearLayers();[...tabs.children].forEach((b,
  document.getElementById('verdict').innerHTML=`<b>Agent answer:</b> The nearest hospital <i>by drive time</i> is <b>${d.hospital}</b> (~${d.drive_min} min, ${d.drive_mi} mi), on your side of the St. Johns River. ${s.hospital} looks closer on a map (${s.crow_mi} mi straight-line), but the straight line crosses the river, so reaching it by road means detouring to a bridge: ${s.drive_mi} mi and about ${s.drive_min} min, <b>${(s.drive_min-d.drive_min).toFixed(1)} min slower</b>.`;
 }
 show(0);
+
+// ---------- Live mode (client-side; public OSRM demo + Nominatim, no keys) ----------
+const BBOX={s:30.10,w:-82.06,n:30.60,e:-81.31};
+const HOSP=F.filter(f=>f.properties.kind==='hospital').map(f=>({name:f.properties.name,lon:f.geometry.coordinates[0],lat:f.geometry.coordinates[1]}));
+const OSRM='https://router.project-osrm.org';
+const msg=(t,err)=>{const m=document.getElementById('msg');m.textContent=t;m.className=err?'err':''};
+const hav=(a,b)=>{const R=3958.8,r=Math.PI/180,dl=(b.lat-a.lat)*r,dn=(b.lon-a.lon)*r;const x=Math.sin(dl/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(x))};
+const MI=1609.344;let busy=false;
+async function getJSON(u){const c=new AbortController();const t=setTimeout(()=>c.abort(),15000);try{const r=await fetch(u,{signal:c.signal});if(!r.ok)throw new Error('HTTP '+r.status);return await r.json()}finally{clearTimeout(t)}}
+async function live(lat,lon,label){
+ if(busy)return;
+ if(lat<BBOX.s||lat>BBOX.n||lon<BBOX.w||lon>BBOX.e){msg('That point is outside Duval County. Pick a spot in the Jacksonville area.',true);return}
+ busy=true;document.getElementById('qb').disabled=true;msg('Routing over real roads…');
+ try{
+  const o={lat,lon};
+  const coords=[[lon,lat],...HOSP.map(h=>[h.lon,h.lat])].map(c=>c[0].toFixed(6)+','+c[1].toFixed(6)).join(';');
+  const t=await getJSON(`${OSRM}/table/v1/driving/${coords}?sources=0&annotations=duration,distance`);
+  if(t.code!=='Ok')throw new Error(t.message||t.code);
+  const rows=HOSP.map((h,i)=>({...h,crow:hav(o,h),min:t.durations[0][i+1]/60,mi:t.distances[0][i+1]/MI})).filter(r=>r.min!=null&&isFinite(r.min));
+  if(!rows.length)throw new Error('no drivable route found');
+  const sl=[...rows].sort((a,b)=>a.crow-b.crow)[0];rows.sort((a,b)=>a.min-b.min);const dr=rows[0];
+  const route=async h=>{const r=await getJSON(`${OSRM}/route/v1/driving/${lon.toFixed(6)},${lat.toFixed(6)};${h.lon.toFixed(6)},${h.lat.toFixed(6)}?overview=full&geometries=geojson`);if(r.code!=='Ok')throw new Error(r.message||r.code);return r.routes[0]};
+  const rd=await route(dr);
+  layer.clearLayers();[...tabs.children].forEach(b=>b.classList.remove('on'));
+  L.polyline([[lat,lon],[sl.lat,sl.lon]],{color:'#d7263d',weight:4,dashArray:'8 8'}).addTo(layer);
+  const ll=rd.geometry.coordinates.map(p=>[p[1],p[0]]);
+  L.polyline(ll,{color:'#1b9e4b',weight:5}).addTo(layer);
+  L.circleMarker([lat,lon],{radius:8,color:'#fff',weight:2,fillColor:'#c9a227',fillOpacity:1}).bindTooltip('Start: '+label).addTo(layer);
+  [[sl,'#d7263d','Straight-line pick'],[dr,'#1b9e4b','Drive-time pick']].forEach(([h,c,tt])=>L.circleMarker([h.lat,h.lon],{radius:9,color:c,weight:3,fill:false}).bindTooltip(tt+': '+h.name).addTo(layer));
+  map.fitBounds(L.latLngBounds([...ll,[sl.lat,sl.lon],[lat,lon]]).pad(0.12));
+  const f=(x,d=1)=>x.toFixed(d);
+  document.getElementById('title').textContent='Your point: '+label;
+  document.getElementById('bad').innerHTML=`<div class="k">Straight-line nearest</div><div class="h">${sl.name}</div><div class="n">${f(sl.crow,2)} mi as the crow flies</div><div class="n">Actual drive: <b>${f(sl.mi,2)} mi</b></div><div class="big">${f(sl.min)} min</div>`;
+  document.getElementById('good').innerHTML=`<div class="k">Drive-time nearest</div><div class="h">${dr.name}</div><div class="n">${f(dr.crow,2)} mi as the crow flies</div><div class="n">Actual drive: <b>${f(dr.mi,2)} mi</b></div><div class="big">${f(dr.min)} min</div>`;
+  document.getElementById('verdict').innerHTML= sl===dr
+   ? `<b>Agent answer:</b> <b>${dr.name}</b> is nearest by straight line <i>and</i> by drive time (~${f(dr.min)} min, ${f(dr.mi,2)} mi). No river trap here.`
+   : `<b>Agent answer:</b> The nearest hospital <i>by drive time</i> is <b>${dr.name}</b> (~${f(dr.min)} min, ${f(dr.mi,2)} mi). ${sl.name} looks closer on a map (${f(sl.crow,2)} mi straight-line), but the road trip is ${f(sl.mi,2)} mi and about ${f(sl.min)} min, <b>${f(sl.min-dr.min)} min slower</b>, usually because a river or bridge is in the way.`;
+  document.getElementById('rank').innerHTML='<tr><th>#</th><th>Hospital</th><th>Drive</th><th>Road mi</th><th>Straight mi</th></tr>'+rows.map((r,i)=>`<tr class="${i===0?'win':''} ${r===sl?'sl':''}"><td>${i+1}</td><td>${r.name}</td><td>${f(r.min)} min</td><td>${f(r.mi,1)}</td><td>${f(r.crow,1)}</td></tr>`).join('');
+  msg('Done. Drive times are free-flow estimates from the public OSRM demo router (no live traffic).');
+ }catch(e){msg('Live routing is unavailable right now ('+(e.name==='AbortError'?'timed out':e.message)+'). The public demo router may be busy; please try again in a minute, or use the example cases above.',true)}
+ finally{busy=false;document.getElementById('qb').disabled=false}
+}
+map.on('click',e=>live(e.latlng.lat,e.latlng.lng,`pin at ${e.latlng.lat.toFixed(5)}, ${e.latlng.lng.toFixed(5)}`));
+let lastGeo=0;
+document.getElementById('q').addEventListener('submit',async ev=>{ev.preventDefault();
+ const q=document.getElementById('qi').value.trim();if(!q||busy)return;
+ const wait=1100-(Date.now()-lastGeo);if(wait>0){msg('One search per second, please…');await new Promise(r=>setTimeout(r,wait))}
+ lastGeo=Date.now();msg('Looking up the address…');
+ try{const u=`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=us&bounded=1&viewbox=${BBOX.w},${BBOX.n},${BBOX.e},${BBOX.s}&q=${encodeURIComponent(q)}`;
+  const r=await getJSON(u);if(!r.length){msg('No match inside Duval County. Try a fuller address.',true);return}
+  live(+r[0].lat,+r[0].lon,r[0].display_name.split(',').slice(0,3).join(','));
+ }catch(e){msg('Address lookup is unavailable right now ('+e.message+'). You can still click the map.',true)}
+});
 </script></body></html>

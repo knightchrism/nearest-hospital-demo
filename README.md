@@ -15,12 +15,11 @@ When you ask a plain language model, or a naive GIS query, "what's the nearest h
 
 | # | Start point (OSM road node) | Straight-line pick | Drive-time pick | Time saved |
 |---|---|---|---|---|
-| 1 | North bank by the Dames Point Bridge — Mc Dowell St & Webster St | Memorial Hospital — 7.4 mi straight-line; 13.76 mi / **18.2 min** by road | University of Florida Health North — 9.49 mi / **11.8 min** | 6.4 min |
-| 2 | Northside, north bank — Broward Cove Road & Broward Road | Baptist Medical Center Jacksonville — 5.65 mi straight-line; 8.77 mi / **11.2 min** by road | University of Florida Health North — 7.0 mi / **7.8 min** | 3.4 min |
-| 3 | San Jose riverfront, east bank — Great Oaks Lane | Ascension St. Vincent's Riverside — 2.76 mi straight-line; 5.94 mi / **9.5 min** by road | Baptist Medical Center Jacksonville — 3.68 mi / **6.1 min** | 3.4 min |
-| 4 | Mandarin, east bank — Hickory Bluff Lane & Scott Mill Road | HCA Florida Orange Park Hospital — 6.06 mi straight-line; 11.15 mi / **13.2 min** by road | Ascension Saint Vincent’s Southside Hospital — 8.26 mi / **11.7 min** | 1.5 min |
+| 1 | Arlington, east bank — Whispering Oaks Drive | UF Health Jacksonville — 4.68 mi straight-line; 9.18 mi / **15.0 min** by road | Memorial Hospital — 6.81 mi / **11.8 min** | 3.2 min |
+| 2 | San Jose riverfront, east bank — Great Oaks Lane | Ascension St. Vincent's Riverside — 2.76 mi straight-line; 5.94 mi / **9.5 min** by road | Baptist Medical Center Jacksonville — 3.68 mi / **6.1 min** | 3.4 min |
+| 3 | Mandarin, east bank — Hickory Bluff Lane & Scott Mill Road | HCA Florida Orange Park Hospital — 6.06 mi straight-line; 11.15 mi / **13.1 min** by road | Ascension Saint Vincent’s Southside Hospital — 8.26 mi / **11.7 min** | 1.4 min |
 
-In every case the straight line to the "nearest" hospital crosses the St. Johns River centerline (OSM), and so does its fastest road route. The drive-time winner's route stays on the same bank (0 river crossings). `data/results.json` records these crossing counts.
+Each case had to pass an automatic filter: the straight line ends on the other bank (an odd number of river crossings), and the drive-time route crosses zero times. In every case the straight line to the "nearest" hospital crosses the St. Johns River centerline (OSM), and so does its fastest road route. The drive-time winner's route stays on the same bank (0 river crossings). `data/results.json` records these crossing counts.
 
 ## How it works
 
@@ -52,12 +51,13 @@ rm /tmp/fl.pbf /tmp/duval_drive.osm         # intermediates aren't needed by the
 | `data/results.geojson` | Origins, straight lines, drive routes, and hospitals (precomputed) |
 | `data/results.json` | Per-case numbers (miles, minutes, river crossings) |
 | `data/hospitals_used.json` | Hospital set used for ranking |
+| `data/hospitals_manual.json` | Manual hospital entries (OSM relations), with notes |
 | `data/candidates.json` | Test points (OSM node ids) |
 | `scripts/*.py` | Clip, river extract, case scan, compute |
 
 ## Assumptions and limits
 
-- **Hospitals:** named OSM `amenity=hospital` features in a Duval County bounding box, filtered to general acute-care hospitals. Rehab, psychiatric, specialty, freestanding-ER, and restricted military facilities are excluded (see `EXCLUDE` in `scripts/compute.py`). OSM has gaps: UF Health Jacksonville's downtown campus isn't tagged `amenity=hospital` in the 2026-10-31 extract, so it isn't a candidate. A production build would cross-check against HIFLD hospitals.
+- **Hospitals:** named OSM `amenity=hospital` features in a Duval County bounding box, filtered to general acute-care hospitals. Rehab, psychiatric, specialty, freestanding-ER, and restricted military facilities are excluded (see `EXCLUDE` in `scripts/compute.py`). **UF Health Jacksonville** (655 W 8th St, downtown) is mapped in OSM as an `amenity=hospital` multipolygon relation ([relation 14547184](https://www.openstreetmap.org/relation/14547184)), and the node/way clip skips relations. It's added by hand in `data/hospitals_manual.json`, using the OSM Nominatim centroid (30.3484582, −81.6649149). A production build would also parse relations and cross-check against HIFLD hospitals.
 - **Travel times** assume free-flow speeds with no live traffic, signals, or turn penalties. Repeated runs can differ by ±0.1 min because ties between parallel edges are broken arbitrarily. Treat them as relative comparisons, not ETAs.
 - This is a methodology demo, **not medical or navigation advice**.
 

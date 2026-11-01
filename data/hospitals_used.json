@@ -58,5 +58,12 @@
   "lat": 30.28810555,
   "lon": -81.60033567,
   "osm": "way/1553524312"
+ },
+ {
+  "name": "UF Health Jacksonville",
+  "lat": 30.3484582,
+  "lon": -81.6649149,
+  "osm": "relation/14547184",
+  "note": "Mapped in OSM as an amenity=hospital multipolygon relation, which the node/way clip skips. Added manually; centroid from OSM Nominatim (655 W 8th St)."
  }
 ]

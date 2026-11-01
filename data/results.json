@@ -1,49 +1,25 @@
 [
  {
-  "label": "North bank by the Dames Point Bridge \u2014 Mc Dowell St & Webster St",
-  "lat": 30.38919,
-  "lon": -81.559215,
+  "label": "Arlington, east bank \u2014 Whispering Oaks Drive",
+  "lat": 30.377751,
+  "lon": -81.594091,
   "straight": {
+   "hospital": "UF Health Jacksonville",
+   "lat": 30.3484582,
+   "lon": -81.6649149,
+   "crow_mi": 4.68,
+   "drive_mi": 9.18,
+   "drive_min": 15.0,
+   "line_crosses_river": 1,
+   "route_crosses_river": 1
+  },
+  "drive": {
    "hospital": "Memorial Hospital",
    "lat": 30.28810555,
    "lon": -81.60033567,
-   "crow_mi": 7.4,
-   "drive_mi": 13.76,
-   "drive_min": 18.2,
-   "line_crosses_river": 1,
-   "route_crosses_river": 1
-  },
-  "drive": {
-   "hospital": "University of Florida Health North",
-   "lat": 30.48413967272727,
-   "lon": -81.63338481818181,
-   "crow_mi": 7.91,
-   "drive_mi": 9.49,
+   "crow_mi": 6.21,
+   "drive_mi": 6.81,
    "drive_min": 11.8,
-   "route_crosses_river": 0
-  }
- },
- {
-  "label": "Northside, north bank \u2014 Broward Cove Road & Broward Road",
-  "lat": 30.397117,
-  "lon": -81.652481,
-  "straight": {
-   "hospital": "Baptist Medical Center Jacksonville",
-   "lat": 30.31594375789474,
-   "lon": -81.66437223368422,
-   "crow_mi": 5.65,
-   "drive_mi": 8.77,
-   "drive_min": 11.2,
-   "line_crosses_river": 1,
-   "route_crosses_river": 1
-  },
-  "drive": {
-   "hospital": "University of Florida Health North",
-   "lat": 30.48413967272727,
-   "lon": -81.63338481818181,
-   "crow_mi": 6.12,
-   "drive_mi": 7.0,
-   "drive_min": 7.8,
    "route_crosses_river": 0
   }
  },
@@ -81,7 +57,7 @@
    "lon": -81.7378772,
    "crow_mi": 6.06,
    "drive_mi": 11.15,
-   "drive_min": 13.2,
+   "drive_min": 13.1,
    "line_crosses_river": 1,
    "route_crosses_river": 1
   },

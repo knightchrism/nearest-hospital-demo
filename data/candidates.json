@@ -1,15 +1,9 @@
 [
  {
-  "label": "North bank by the Dames Point Bridge — Mc Dowell St & Webster St",
-  "lat": 30.38919,
-  "lon": -81.559215,
-  "osm_node": 3639734254
- },
- {
-  "label": "Northside, north bank — Broward Cove Road & Broward Road",
-  "lat": 30.397117,
-  "lon": -81.652481,
-  "osm_node": 6436875960
+  "label": "Arlington, east bank — Whispering Oaks Drive",
+  "lat": 30.377751,
+  "lon": -81.594091,
+  "osm_node": 6442499082
  },
  {
   "label": "San Jose riverfront, east bank — Great Oaks Lane",

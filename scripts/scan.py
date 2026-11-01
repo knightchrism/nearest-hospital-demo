@@ -14,7 +14,7 @@ def hav(a, b):
     R=3958.8; la1,lo1,la2,lo2=map(math.radians,(a[0],a[1],b[0],b[1]))
     return 2*R*math.asin(math.sqrt(math.sin((la2-la1)/2)**2+math.cos(la1)*math.cos(la2)*math.sin((lo2-lo1)/2)**2))
 EX=("Rehabilitation","Wekiva","Ten Broeck","Nemours","MD Anderson","PAM Health","Emergency","Naval")
-H={}; [H.setdefault(x["name"],x) for x in json.load(open("data/hospitals_osm_raw.json")) if not any(e in x["name"] for e in EX)]
+H={}; [H.setdefault(x["name"],x) for x in json.load(open("data/hospitals_osm_raw.json"))+json.load(open("data/hospitals_manual.json")) if not any(e in x["name"] for e in EX)]
 H=list(H.values())
 for x in H: x["node"]=ox.distance.nearest_nodes(G,x["lon"],x["lat"])
 R=G.reverse(copy=False); dist={}

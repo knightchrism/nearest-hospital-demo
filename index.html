@@ -37,7 +37,7 @@ small,.foot{color:#5b6775;font-size:12px}
 <li><b>Rank by travel time:</b> every candidate hospital is ranked by drive minutes, not by straight-line miles.</li>
 <li><b>Model explains:</b> the LLM agent calls these GIS tools, then reports the answer in plain language and says why the straight-line pick is wrong (e.g. the river is between you and it).</li>
 </ol>
-<p><small>Times are free-flow estimates with no live traffic. This is a methodology demo, not medical or navigation advice. Hospitals are named OSM <code>amenity=hospital</code> features in Duval County, limited to general acute-care hospitals; OSM coverage has gaps (UF Health Jacksonville’s downtown campus is not tagged <code>amenity=hospital</code> in this extract, so it isn’t included).</small></p></div>
+<p><small>Times are free-flow estimates with no live traffic. This is a methodology demo, not medical or navigation advice. Hospitals are named OSM <code>amenity=hospital</code> features in Duval County, limited to general acute-care hospitals; UF Health Jacksonville (downtown) is mapped in OSM as a relation, so it was added manually from its OSM/Nominatim location.</small></p></div>
 <p class="foot">Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> (ODbL), road network from the Geofabrik Florida extract. Built by GeoKnight GIS with AI assistance.</p>
 </aside></main>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

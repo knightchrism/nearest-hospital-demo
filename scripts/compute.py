@@ -20,7 +20,7 @@ G = ox.add_edge_speeds(G); G = ox.add_edge_travel_times(G)
 G = ox.truncate.largest_component(G, strongly=True)
 # Hospitals: OSM amenity=hospital (named), limited to general acute-care inpatient hospitals.
 EXCLUDE = ("Rehabilitation", "Wekiva", "Ten Broeck", "Nemours", "MD Anderson", "PAM Health", "Emergency", "Naval")
-raw = json.load(open(f"{OUT}/hospitals_osm_raw.json"))
+raw = json.load(open(f"{OUT}/hospitals_osm_raw.json")) + json.load(open(f"{OUT}/hospitals_manual.json"))  # manual: OSM relations
 seen = {}
 for x in raw:
     if not any(e in x["name"] for e in EXCLUDE): seen.setdefault(x["name"], x)
@@ -57,6 +57,8 @@ for c in cands:
                    "crow_mi": round(hav((c["lat"], c["lon"]), (dr["lat"], dr["lon"])), 2),
                    "drive_mi": round(dmi, 2), "drive_min": round(dmin, 1), "route": dc,
                    "route_crosses_river": crossings(dc)}}
+    if r["straight"]["line_crosses_river"] % 2 == 0 or r["drive"]["route_crosses_river"] != 0:
+        print("not a river-trap case (straight line does not end on the other bank), skipped:", c["label"]); continue
     if r["straight"]["drive_min"] - r["drive"]["drive_min"] < 1.0:
         print("margin < 1 min, skipped:", c["label"]); continue
     print(r["label"], "| SL:", sl["name"], r["straight"]["crow_mi"], "mi crow,", r["straight"]["drive_min"], "min | DR:", dr["name"], r["drive"]["drive_mi"], "mi", r["drive"]["drive_min"], "min")

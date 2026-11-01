@@ -1,0 +1,1 @@
+- 2026-11-01: README polish (banner, badges, GIF, results, diagram), repo description/topics/homepage, social preview image in docs/, demo linked from knightchrism.github.io and profile README. AI-assisted; no secrets, no 911/phone references.

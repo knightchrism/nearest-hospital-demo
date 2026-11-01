@@ -1,0 +1,128 @@
+[
+ {
+  "name": "Brooks Rehabilitation Hospital \u2013 University Campus",
+  "lat": 30.2902563,
+  "lon": -81.6011984,
+  "osm": "node/358715199"
+ },
+ {
+  "name": "Wekiva Springs",
+  "lat": 30.2580283,
+  "lon": -81.595717,
+  "osm": "node/10844749361"
+ },
+ {
+  "name": "HCA Florida Orange Park Hospital",
+  "lat": 30.1656226,
+  "lon": -81.7378772,
+  "osm": "node/12706686601"
+ },
+ {
+  "name": "Baptist Medical Center Beaches",
+  "lat": 30.273516176190476,
+  "lon": -81.3989370904762,
+  "osm": "way/132895043"
+ },
+ {
+  "name": "Mayo Clinic Campus",
+  "lat": 30.26020792352941,
+  "lon": -81.444659,
+  "osm": "way/133776920"
+ },
+ {
+  "name": "Baptist Medical Center South",
+  "lat": 30.13863209459459,
+  "lon": -81.53438362432432,
+  "osm": "way/336163145"
+ },
+ {
+  "name": "Baptist Medical Center Jacksonville",
+  "lat": 30.31594375789474,
+  "lon": -81.66437223368422,
+  "osm": "way/351665511"
+ },
+ {
+  "name": "Nemours Children's Specialty Care",
+  "lat": 30.312677206060606,
+  "lon": -81.66292337272728,
+  "osm": "way/362815989"
+ },
+ {
+  "name": "HCA Florida Royal Pines Emergency",
+  "lat": 30.160073185714285,
+  "lon": -81.83407442857143,
+  "osm": "way/412278802"
+ },
+ {
+  "name": "Baptist Emergency at Town Center",
+  "lat": 30.26729554,
+  "lon": -81.52268506,
+  "osm": "way/434298978"
+ },
+ {
+  "name": "Ascension Saint Vincent\u2019s Southside Hospital",
+  "lat": 30.254356142857144,
+  "lon": -81.5819571,
+  "osm": "way/502144326"
+ },
+ {
+  "name": "Ascension St. Vincent's Riverside",
+  "lat": 30.307060657777775,
+  "lon": -81.68949586222223,
+  "osm": "way/502198875"
+ },
+ {
+  "name": "Naval Hospital Jacksonville",
+  "lat": 30.20828176875,
+  "lon": -81.682768496875,
+  "osm": "way/502237494"
+ },
+ {
+  "name": "Saint Vincent\u2019s Medical Center Clay County",
+  "lat": 30.10964531818182,
+  "lon": -81.8323654,
+  "osm": "way/502416631"
+ },
+ {
+  "name": "Baptist MD Anderson Cancer Center",
+  "lat": 30.313154006666664,
+  "lon": -81.66129487333335,
+  "osm": "way/539807810"
+ },
+ {
+  "name": "HCA Florida Mandarin Emergency",
+  "lat": 30.177837121052633,
+  "lon": -81.6288987,
+  "osm": "way/606854602"
+ },
+ {
+  "name": "Park West Emergency",
+  "lat": 30.24903706666667,
+  "lon": -81.74889961666666,
+  "osm": "way/646576812"
+ },
+ {
+  "name": "PAM Health Specialty Hospital of Jacksonville",
+  "lat": 30.271958138095236,
+  "lon": -81.6159001904762,
+  "osm": "way/851867892"
+ },
+ {
+  "name": "Ten Broeck Hospital Jacksonville",
+  "lat": 30.290316342857142,
+  "lon": -81.59715591428572,
+  "osm": "way/877957817"
+ },
+ {
+  "name": "University of Florida Health North",
+  "lat": 30.48413967272727,
+  "lon": -81.63338481818181,
+  "osm": "way/1517885239"
+ },
+ {
+  "name": "Memorial Hospital",
+  "lat": 30.28810555,
+  "lon": -81.60033567,
+  "osm": "way/1553524312"
+ }
+]

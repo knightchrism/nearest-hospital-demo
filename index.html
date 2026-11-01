@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nearest Hospital: Straight Line vs Real Roads · GeoKnight GIS</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--navy:#0d2238;--gold:#c9a227;--red:#d7263d;--green:#1b9e4b;--ink:#1d2733}
+*{box-sizing:border-box}body{margin:0;font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:#f4f6f8}
+header{background:var(--navy);color:#fff;padding:14px 22px;display:flex;align-items:center;gap:14px;border-bottom:4px solid var(--gold)}
+header .logo{font-weight:800;letter-spacing:.5px;font-size:18px}header .logo span{color:var(--gold)}
+header h1{font-size:17px;font-weight:500;margin:0;opacity:.95}
+main{display:grid;grid-template-columns:1fr 400px;height:calc(100vh - 62px)}
+#map{height:100%}aside{overflow:auto;padding:16px 18px;background:#fff;border-left:1px solid #dde3ea}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}.tabs button{border:1px solid #c6d0db;background:#fff;border-radius:16px;padding:5px 11px;cursor:pointer;font-size:13px}
+.tabs button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+h2{font-size:15px;margin:4px 0 10px}.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{border-radius:10px;padding:10px 12px;border:2px solid}.card.bad{border-color:var(--red);background:#fdf1f3}.card.good{border-color:var(--green);background:#eff9f2}
+.card .k{font-size:11px;text-transform:uppercase;letter-spacing:.6px;font-weight:700}.bad .k{color:var(--red)}.good .k{color:var(--green)}
+.card .h{font-weight:700;margin:4px 0 6px;font-size:14px}.card .n{font-size:13px}.card .big{font-size:20px;font-weight:800}
+.verdict{margin:12px 0;padding:10px 12px;background:#fff8e1;border-left:4px solid var(--gold);border-radius:4px;font-size:14px}
+.how ol{padding-left:20px;margin:6px 0}.how li{margin:5px 0}.how{margin-top:14px;border-top:1px solid #e3e8ee;padding-top:10px}
+.legend{font-size:13px;margin:8px 0}.legend i{display:inline-block;width:26px;height:0;border-top:3px solid;vertical-align:middle;margin-right:6px}
+small,.foot{color:#5b6775;font-size:12px}
+</style></head><body>
+<header><div class="logo">GEO<span>KNIGHT</span> GIS</div><h1>“Which hospital is nearest?” Straight-line distance vs. real roads, Jacksonville, FL</h1></header>
+<main><div id="map"></div><aside>
+<div class="tabs" id="tabs"></div>
+<h2 id="title"></h2>
+<div class="cards"><div class="card bad" id="bad"></div><div class="card good" id="good"></div></div>
+<div class="verdict" id="verdict"></div>
+<div class="legend"><i style="border-color:var(--red);border-top-style:dashed"></i>Straight-line nearest (as the crow flies)<br>
+<i style="border-color:var(--green)"></i>Fastest driving route over real roads and bridges<br>
+<i style="border-color:#3a7bd5"></i>St. Johns River centerline (OSM)</div>
+<div class="how"><h2>How it works</h2><ol>
+<li><b>Question:</b> “What’s the nearest hospital to this location?”</li>
+<li><b>Geocode / snap:</b> the location is matched to the nearest node on the OpenStreetMap drivable road network.</li>
+<li><b>Network routing:</b> Dijkstra shortest paths over real roads and bridges, weighted by travel time (OSM speed limits, with typical speeds filled in where they are missing).</li>
+<li><b>Rank by travel time:</b> every candidate hospital is ranked by drive minutes, not by straight-line miles.</li>
+<li><b>Model explains:</b> the LLM agent calls these GIS tools, then reports the answer in plain language and says why the straight-line pick is wrong (e.g. the river is between you and it).</li>
+</ol>
+<p><small>Times are free-flow estimates with no live traffic. This is a methodology demo, not medical or navigation advice. Hospitals are named OSM <code>amenity=hospital</code> features in Duval County, limited to general acute-care hospitals; OSM coverage has gaps (UF Health Jacksonville’s downtown campus is not tagged <code>amenity=hospital</code> in this extract, so it isn’t included).</small></p></div>
+<p class="foot">Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> (ODbL), road network from the Geofabrik Florida extract. Built by GeoKnight GIS with AI assistance.</p>
+</aside></main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="data/results.js"></script>
+<script>
+const map=L.map('map').setView([30.30,-81.66],11);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+L.geoJSON(DEMO_RIVER,{style:{color:'#3a7bd5',weight:2,opacity:.6}}).addTo(map);
+const F=DEMO_GEOJSON.features,R=DEMO_RESULTS;
+F.filter(f=>f.properties.kind==='hospital').forEach(f=>L.circleMarker([f.geometry.coordinates[1],f.geometry.coordinates[0]],{radius:5,color:'#fff',weight:1.5,fillColor:'#0d2238',fillOpacity:1}).bindTooltip(f.properties.name).addTo(map));
+let layer=L.layerGroup().addTo(map);
+const tabs=document.getElementById('tabs');
+R.forEach((r,i)=>{const b=document.createElement('button');b.textContent=`Case ${i+1}`;b.onclick=()=>show(i);tabs.appendChild(b)});
+function show(i){const r=R[i];layer.clearLayers();[...tabs.children].forEach((b,j)=>b.classList.toggle('on',i===j));
+ const g=k=>F.find(f=>f.properties.case===i&&f.properties.kind===k);
+ const ll=c=>c.map(p=>[p[1],p[0]]);
+ L.polyline(ll(g('straight').geometry.coordinates),{color:'#d7263d',weight:4,dashArray:'8 8'}).addTo(layer);
+ const gr=L.polyline(ll(g('drive_route').geometry.coordinates),{color:'#1b9e4b',weight:5}).addTo(layer);
+ L.circleMarker([r.lat,r.lon],{radius:8,color:'#fff',weight:2,fillColor:'#c9a227',fillOpacity:1}).bindTooltip('Start: '+r.label,{permanent:false}).addTo(layer);
+ [[r.straight,'#d7263d','Straight-line pick'],[r.drive,'#1b9e4b','Drive-time pick']].forEach(([h,c,t])=>L.circleMarker([h.lat,h.lon],{radius:9,color:c,weight:3,fill:false}).bindTooltip(t+': '+h.hospital).addTo(layer));
+ map.fitBounds(L.latLngBounds([...ll(g('drive_route').geometry.coordinates),[r.straight.lat,r.straight.lon],[r.lat,r.lon]]).pad(0.12));
+ document.getElementById('title').textContent=`Case ${i+1}: ${r.label}`;
+ const s=r.straight,d=r.drive;
+ document.getElementById('bad').innerHTML=`<div class="k">Straight-line nearest</div><div class="h">${s.hospital}</div><div class="n">${s.crow_mi} mi as the crow flies</div><div class="n">Actual drive: <b>${s.drive_mi} mi</b></div><div class="big">${s.drive_min} min</div>`;
+ document.getElementById('good').innerHTML=`<div class="k">Drive-time nearest</div><div class="h">${d.hospital}</div><div class="n">${d.crow_mi} mi as the crow flies</div><div class="n">Actual drive: <b>${d.drive_mi} mi</b></div><div class="big">${d.drive_min} min</div>`;
+ document.getElementById('verdict').innerHTML=`<b>Agent answer:</b> The nearest hospital <i>by drive time</i> is <b>${d.hospital}</b> (~${d.drive_min} min, ${d.drive_mi} mi), on your side of the St. Johns River. ${s.hospital} looks closer on a map (${s.crow_mi} mi straight-line), but the straight line crosses the river, so reaching it by road means detouring to a bridge: ${s.drive_mi} mi and about ${s.drive_min} min, <b>${(s.drive_min-d.drive_min).toFixed(1)} min slower</b>.`;
+}
+show(0);
+</script></body></html>

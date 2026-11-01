@@ -1,0 +1,62 @@
+[
+ {
+  "name": "HCA Florida Orange Park Hospital",
+  "lat": 30.1656226,
+  "lon": -81.7378772,
+  "osm": "node/12706686601"
+ },
+ {
+  "name": "Baptist Medical Center Beaches",
+  "lat": 30.273516176190476,
+  "lon": -81.3989370904762,
+  "osm": "way/132895043"
+ },
+ {
+  "name": "Mayo Clinic Campus",
+  "lat": 30.26020792352941,
+  "lon": -81.444659,
+  "osm": "way/133776920"
+ },
+ {
+  "name": "Baptist Medical Center South",
+  "lat": 30.13863209459459,
+  "lon": -81.53438362432432,
+  "osm": "way/336163145"
+ },
+ {
+  "name": "Baptist Medical Center Jacksonville",
+  "lat": 30.31594375789474,
+  "lon": -81.66437223368422,
+  "osm": "way/351665511"
+ },
+ {
+  "name": "Ascension Saint Vincent\u2019s Southside Hospital",
+  "lat": 30.254356142857144,
+  "lon": -81.5819571,
+  "osm": "way/502144326"
+ },
+ {
+  "name": "Ascension St. Vincent's Riverside",
+  "lat": 30.307060657777775,
+  "lon": -81.68949586222223,
+  "osm": "way/502198875"
+ },
+ {
+  "name": "Saint Vincent\u2019s Medical Center Clay County",
+  "lat": 30.10964531818182,
+  "lon": -81.8323654,
+  "osm": "way/502416631"
+ },
+ {
+  "name": "University of Florida Health North",
+  "lat": 30.48413967272727,
+  "lon": -81.63338481818181,
+  "osm": "way/1517885239"
+ },
+ {
+  "name": "Memorial Hospital",
+  "lat": 30.28810555,
+  "lon": -81.60033567,
+  "osm": "way/1553524312"
+ }
+]

@@ -1,0 +1,26 @@
+[
+ {
+  "label": "North bank by the Dames Point Bridge — Mc Dowell St & Webster St",
+  "lat": 30.38919,
+  "lon": -81.559215,
+  "osm_node": 3639734254
+ },
+ {
+  "label": "Northside, north bank — Broward Cove Road & Broward Road",
+  "lat": 30.397117,
+  "lon": -81.652481,
+  "osm_node": 6436875960
+ },
+ {
+  "label": "San Jose riverfront, east bank — Great Oaks Lane",
+  "lat": 30.276001,
+  "lon": -81.660325,
+  "osm_node": 96940451
+ },
+ {
+  "label": "Mandarin, east bank — Hickory Bluff Lane & Scott Mill Road",
+  "lat": 30.180831,
+  "lon": -81.637883,
+  "osm_node": 96666527
+ }
+]

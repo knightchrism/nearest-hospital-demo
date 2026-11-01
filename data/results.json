@@ -1,0 +1,98 @@
+[
+ {
+  "label": "North bank by the Dames Point Bridge \u2014 Mc Dowell St & Webster St",
+  "lat": 30.38919,
+  "lon": -81.559215,
+  "straight": {
+   "hospital": "Memorial Hospital",
+   "lat": 30.28810555,
+   "lon": -81.60033567,
+   "crow_mi": 7.4,
+   "drive_mi": 13.76,
+   "drive_min": 18.2,
+   "line_crosses_river": 1,
+   "route_crosses_river": 1
+  },
+  "drive": {
+   "hospital": "University of Florida Health North",
+   "lat": 30.48413967272727,
+   "lon": -81.63338481818181,
+   "crow_mi": 7.91,
+   "drive_mi": 9.49,
+   "drive_min": 11.8,
+   "route_crosses_river": 0
+  }
+ },
+ {
+  "label": "Northside, north bank \u2014 Broward Cove Road & Broward Road",
+  "lat": 30.397117,
+  "lon": -81.652481,
+  "straight": {
+   "hospital": "Baptist Medical Center Jacksonville",
+   "lat": 30.31594375789474,
+   "lon": -81.66437223368422,
+   "crow_mi": 5.65,
+   "drive_mi": 8.77,
+   "drive_min": 11.2,
+   "line_crosses_river": 1,
+   "route_crosses_river": 1
+  },
+  "drive": {
+   "hospital": "University of Florida Health North",
+   "lat": 30.48413967272727,
+   "lon": -81.63338481818181,
+   "crow_mi": 6.12,
+   "drive_mi": 7.0,
+   "drive_min": 7.8,
+   "route_crosses_river": 0
+  }
+ },
+ {
+  "label": "San Jose riverfront, east bank \u2014 Great Oaks Lane",
+  "lat": 30.276001,
+  "lon": -81.660325,
+  "straight": {
+   "hospital": "Ascension St. Vincent's Riverside",
+   "lat": 30.307060657777775,
+   "lon": -81.68949586222223,
+   "crow_mi": 2.76,
+   "drive_mi": 5.94,
+   "drive_min": 9.5,
+   "line_crosses_river": 1,
+   "route_crosses_river": 1
+  },
+  "drive": {
+   "hospital": "Baptist Medical Center Jacksonville",
+   "lat": 30.31594375789474,
+   "lon": -81.66437223368422,
+   "crow_mi": 2.77,
+   "drive_mi": 3.68,
+   "drive_min": 6.1,
+   "route_crosses_river": 0
+  }
+ },
+ {
+  "label": "Mandarin, east bank \u2014 Hickory Bluff Lane & Scott Mill Road",
+  "lat": 30.180831,
+  "lon": -81.637883,
+  "straight": {
+   "hospital": "HCA Florida Orange Park Hospital",
+   "lat": 30.1656226,
+   "lon": -81.7378772,
+   "crow_mi": 6.06,
+   "drive_mi": 11.15,
+   "drive_min": 13.2,
+   "line_crosses_river": 1,
+   "route_crosses_river": 1
+  },
+  "drive": {
+   "hospital": "Ascension Saint Vincent\u2019s Southside Hospital",
+   "lat": 30.254356142857144,
+   "lon": -81.5819571,
+   "crow_mi": 6.08,
+   "drive_mi": 8.26,
+   "drive_min": 11.7,
+   "route_crosses_river": 0
+  }
+ }
+]

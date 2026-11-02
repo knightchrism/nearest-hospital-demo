@@ -133,4 +133,7 @@ document.getElementById('q').addEventListener('submit',async ev=>{ev.preventDefa
   live(+r[0].lat,+r[0].lon,r[0].display_name.split(',').slice(0,3).join(','));
  }catch(e){msg('Address lookup is unavailable right now ('+e.message+'). You can still click the map.',true)}
 });
-</script></body></html>
+</script><!-- GeoKnight home button -->
+<style>.gk-home{position:fixed;left:12px;bottom:12px;z-index:10000;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;background:#0b1f3a;color:#c9a227;border:1.5px solid #c9a227;border-radius:6px;font:600 14px/1.2 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.35)}.gk-home:hover,.gk-home:focus{background:#c9a227;color:#0b1f3a;outline:none}.leaflet-bottom.leaflet-left,.maplibregl-ctrl-bottom-left,.mapboxgl-ctrl-bottom-left,.cesium-viewer-bottom{margin-bottom:48px!important}@media (max-width:600px){.gk-home{font-size:15px;padding:9px 13px}}</style>
+<a class="gk-home" href="https://geoknightgis.com/" aria-label="Back to GeoKnight GIS home">&larr; Home</a>
+</body></html>

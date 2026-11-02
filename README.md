@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://knightchrism.github.io/nearest-hospital-demo/"><img alt="Live demo" src="https://img.shields.io/badge/Live_Demo-Open_the_map-1b9e4b?style=for-the-badge&logo=githubpages&logoColor=white"></a>
-  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-c9a227?style=for-the-badge"></a>
+  <a href="LICENSE"><img alt="License: All rights reserved" src="https://img.shields.io/badge/License-All%20rights%20reserved-c9a227?style=for-the-badge"></a>
   <a href="https://www.openstreetmap.org/copyright"><img alt="Data: OpenStreetMap" src="https://img.shields.io/badge/Data-OpenStreetMap-7ebc6f?style=for-the-badge&logo=openstreetmap&logoColor=white"></a>
   <a href="https://leafletjs.com/"><img alt="Leaflet" src="https://img.shields.io/badge/Map-Leaflet-199900?style=for-the-badge&logo=leaflet&logoColor=white"></a>
   <a href="https://project-osrm.org/"><img alt="Routing: OSRM" src="https://img.shields.io/badge/Routing-OSRM-0d2238?style=for-the-badge"></a>
@@ -121,8 +121,4 @@ An AI assistant helped build this project (code, data processing, graphics, and 
 
 ## License
 
-Code: [MIT](LICENSE) © 2026 GeoKnight GIS. Data in `data/` is derived from OpenStreetMap and stays under the ODbL.
-
----
-
-<p align="center"><b>GEO<span>KNIGHT</span> GIS</b> · Jacksonville, Florida · <a href="https://knightchrism.github.io/">knightchrism.github.io</a> · <a href="https://github.com/knightchrism">@knightchrism</a></p>
+Copyright (c) 2026 GeoKnight GIS. All rights reserved. No copying or reuse without written permission; see [LICENSE](LICENSE). Third-party libraries and data keep their own licenses and terms (listed in [LICENSE](LICENSE)).
